@@ -55,7 +55,7 @@ namespace extcrypto {
 
     RSA* rsa   = RSA_new();
     int64_t kg = RSA_generate_key_ex(rsa, 2048, exp, NULL);
-    if (!kg) { return eret(isolate, cb, String::NewFromUtf8(isolate, "Unable to generate key")); }
+    if (!kg) { return eret(isolate, cb, String::NewFromUtf8(isolate, "Unable to generate key").ToLocalChecked()); }
 
     BIO* bio = BIO_new(BIO_s_mem());
     PEM_write_bio_RSAPrivateKey(bio, rsa, NULL, NULL, 0, NULL, NULL);
@@ -68,7 +68,7 @@ namespace extcrypto {
       BIO_vfree(bio);
       RSA_free(rsa);
       BN_free(exp);
-      return eret(isolate, cb, String::NewFromUtf8(isolate, "Unable to generate key"));
+      return eret(isolate, cb, String::NewFromUtf8(isolate, "Unable to generate key").ToLocalChecked());
     }
 
     BIO_read(bio, key, kl);
@@ -106,7 +106,7 @@ namespace extcrypto {
       free(pkey); // in case overflow has calloc return a non-null pointer to zero memory
       BIO_vfree(bio);
       RSA_free(rsa);
-      return eret(isolate, cb, String::NewFromUtf8(isolate, "Unable to generate key"));
+      return eret(isolate, cb, String::NewFromUtf8(isolate, "Unable to generate key").ToLocalChecked());
     }
 
     BIO_read(bio, pkey, kl);
@@ -142,7 +142,7 @@ namespace extcrypto {
       free(pkey); // in case overflow has calloc return a non-null pointer to zero memory
       BIO_vfree(bio);
       RSA_free(rsa);
-      return eret(isolate, cb, String::NewFromUtf8(isolate, "Unable to generate key"));
+      return eret(isolate, cb, String::NewFromUtf8(isolate, "Unable to generate key").ToLocalChecked());
     }
 
     BIO_read(bio, pkey, kl);
