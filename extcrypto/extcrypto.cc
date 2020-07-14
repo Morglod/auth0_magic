@@ -30,7 +30,7 @@ namespace extcrypto {
 
   void ret(Isolate* isolate, Local<Function> cb, MaybeLocal<String> statement) {
     const uint64_t argc = 2;
-    Local<Value> argv[argc] = { Null(isolate), statement };
+    MaybeLocal<Value> argv[argc] = { Null(isolate), statement };
     Nan::Callback callback(cb);
 
     callback.Call(v8::Object::New(isolate), argc, argv);
@@ -39,7 +39,7 @@ namespace extcrypto {
 
   void eret(Isolate* isolate, Local<Function> cb, MaybeLocal<String> statement) {
     const uint64_t argc = 1;
-    Local<Value> argv[argc] = { Exception::Error(statement) };
+    MaybeLocal<Value> argv[argc] = { Exception::Error(statement) };
     Nan::Callback callback(cb);
 
     callback.Call(v8::Object::New(isolate), argc, argv);
