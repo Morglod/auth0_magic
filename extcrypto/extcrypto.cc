@@ -28,18 +28,18 @@ namespace extcrypto {
   using v8::Value;
 
 
-  void ret(Isolate* isolate, Local<Function> cb, MaybeLocal<String> statement) {
+  void ret(Isolate* isolate, Local<Function> cb, Local<String> statement) {
     const uint64_t argc = 2;
-    MaybeLocal<Value> argv[argc] = { Null(isolate), statement };
+    Local<Value> argv[argc] = { Null(isolate), statement };
     Nan::Callback callback(cb);
 
     callback.Call(v8::Object::New(isolate), argc, argv);
   }
 
 
-  void eret(Isolate* isolate, Local<Function> cb, MaybeLocal<String> statement) {
+  void eret(Isolate* isolate, Local<Function> cb, Local<String> statement) {
     const uint64_t argc = 1;
-    MaybeLocal<Value> argv[argc] = { Exception::Error(statement) };
+    Local<Value> argv[argc] = { Exception::Error(statement) };
     Nan::Callback callback(cb);
 
     callback.Call(v8::Object::New(isolate), argc, argv);
@@ -77,7 +77,7 @@ namespace extcrypto {
     RSA_free(rsa);
     BN_free(exp);
 
-    MaybeLocal<String> rval = String::NewFromUtf8(isolate, key);
+    Local<String> rval = String::NewFromUtf8(isolate, key).ToLocalChecked();
     free(key);
 
     return ret(isolate, cb, rval);
@@ -114,7 +114,7 @@ namespace extcrypto {
     BIO_vfree(bio);
     RSA_free(rsa);
 
-    MaybeLocal<String> rval = String::NewFromUtf8(isolate, pkey);
+    Local<String> rval = String::NewFromUtf8(isolate, pkey).ToLocalChecked();
     free(pkey);
 
     return ret(isolate, cb, rval);
@@ -150,7 +150,7 @@ namespace extcrypto {
     BIO_vfree(bio);
     RSA_free(rsa);
 
-    MaybeLocal<String> rval = String::NewFromUtf8(isolate, pkey);
+    Local<String> rval = String::NewFromUtf8(isolate, pkey).ToLocalChecked();
     free(pkey);
 
     return ret(isolate, cb, rval);
